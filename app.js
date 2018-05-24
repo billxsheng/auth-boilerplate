@@ -7,9 +7,13 @@ const keys = require('./config/keys');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const hbs = require('hbs');
+const path = require('path');
 
 
 const app = express();
+
+
+app.use(express.static(path.join(__dirname, '/views')));
 
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
@@ -31,14 +35,14 @@ app.set('view engine', 'hbs');
 
 //setup routes
 app.use('/auth', authRoutes);
-app.use('/', profileRoutes);
+app.use('/profile', profileRoutes);
 
 //home route
 app.get('/', (req, res) => {
     res.render("start");
 });
 
-app.get('/home', (req, res) => {
+app.get('/login', (req, res) => {
     res.render('home'); 
 });
 

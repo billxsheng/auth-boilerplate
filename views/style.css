@@ -216,13 +216,41 @@ input {
     color: #000;
     background-color: rgba(187, 222, 251, 0.78) !important;
 }
-.btn-main2:hover {
-    color: #000;
-    background-color: rgba(187, 222, 251, 0.78) !important;
-}
+
 
 .main-pre-signup {
     height: 800px;
     background: -webkit-linear-gradient(bottom left, #6c1cbc, rgba(94, 175, 244, 0.69));
 }
 
+.welcome,
+.signedinwith{
+    text-align: center;
+}
+
+.main-profile {
+    height: 900px;
+    background: -webkit-linear-gradient(bottom left, #6c1cbc, rgba(94, 175, 244, 0.69));
+}
+
+.home-profile {
+    background-color: #fff;
+    width: 400px !important;
+    height: 300px;
+    position: relative;
+    top: 130px;
+    border-radius: 30px;
+}
+
+.home-profile img {
+    width: 100px;
+    left: 50%;
+    position: relative;
+    margin-left: -50px;
+    bottom: 50px;
+}
+
+.btn-logout {
+    position: relative;
+    top: 20px;
+}
