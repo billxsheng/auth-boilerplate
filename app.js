@@ -35,7 +35,11 @@ app.use('/', profileRoutes);
 
 //home route
 app.get('/', (req, res) => {
-    res.render("home");
+    res.render("start");
+});
+
+app.get('/home', (req, res) => {
+    res.render('home'); 
 });
 
 
