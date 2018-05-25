@@ -148,7 +148,7 @@ input {
 .signup-main {
     background-color: #fff;
     width: 400px !important;
-    height: 600px;
+    height: 620px;
     position: relative;
     top: 130px;
     border-top-left-radius: 30px;
@@ -253,4 +253,11 @@ input {
 .btn-logout {
     position: relative;
     top: 20px;
+}
+
+.error {
+    color: red;
+    position: relative;
+    top: 50px;
+    text-align: center;
 }

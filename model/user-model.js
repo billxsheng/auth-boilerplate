@@ -1,13 +1,40 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
 
-var Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-    username: String,
-    googleId: String
+var userSchema = mongoose.Schema({
+        firstName:  String,
+        lastName: String,
+        email: String,
+        password: {
+            type: String
+    }
+    
+    //username: String,
+   // googleId: String,
+    
+
 });
 
-const User = mongoose.model("user", userSchema);
+userSchema.methods.validPassword = function(password) {
+    bcrypt.compareSync(password, this.password);
+}
+var User = module.statics = module.exports = mongoose.model('User', userSchema);
 
+module.statics.emailVeri = function(email) {
+    var User = this;
+    return User.findOne({email}).then((user) => {
+        if(user) {
+            return Promise.reject();
+        }
+    })
+};
 
-module.exports = User;
+module.exports.createUser = (user, callback) => {
+    bcrypt.genSalt(10, (err, salt) => {
+        console.log(salt);
+        bcrypt.hash(user.password, salt, null, (err, hash) => {
+            user.password = hash;
+        });
+    });
+};
