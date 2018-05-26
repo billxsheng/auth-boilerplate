@@ -16,9 +16,6 @@ var userSchema = mongoose.Schema({
 
 });
 
-userSchema.methods.validPassword = function(password) {
-    bcrypt.compareSync(password, this.password);
-}
 var User = module.statics = module.exports = mongoose.model('User', userSchema);
 
 module.statics.emailVeri = function(email) {
@@ -38,3 +35,27 @@ module.exports.createUser = (user, callback) => {
         });
     });
 };
+
+// module.statics.findByCredentials = (email, password) => {
+//     return User.findOne({email}).then((user) => {
+//         if(!user) {
+//             return Promise.reject();
+//         }
+//         return new Promise((resolve, reject) => {
+//             bcrypt.compare(email, hash, (err, res) => {
+//                 if(res) {
+//                     resolve(user);
+//                 } else {
+//                     reject();
+//                 }
+//             });
+//         })
+//     });
+
+// }
+
+module.exports.getByCredentials = function(username, callback) {
+var query = {username: username};
+User.findOne(query, callback);
+};
+

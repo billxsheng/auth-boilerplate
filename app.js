@@ -8,13 +8,17 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const hbs = require('hbs');
 const path = require('path');
-const {User} = require('./model/user-model');
+const User = require('./model/user-model');
 const bodyParser = require('body-parser');
-var localStrategy = require('passport-local').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 var mongodb = require('mongodb');
 
 //express app
 const app = express();
+
+//body-parser stuff
+app.use(bodyParser.json());
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 //deploy 
 const port = process.env.PORT || 3000
@@ -48,6 +52,76 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     res.render('login'); 
 });
+
+//serialize
+// passport.serializeUser(function(user, done) {
+//     done(null, user.id);
+//   });
+  
+
+  //deserialize 
+//   passport.deserializeUser(function(id, done) {
+//     User.getUserById(id, function(err, user) {
+//       done(err, user);
+//     });
+//   });
+
+
+// app.post('/login/redirect', urlencodedParser, (req, res) => {
+//     console.log(req.body);
+//     if(req.body.email === "") {
+//         res.render('login', {
+//             error: "Please enter a valid email."
+//         });
+//     } else if (req.body.password === "") {
+//         res.render('login', {
+//             error: "Please enter a valid password."
+//         });
+//     };
+//     User.findByCredentials(req.body.email, req.body.password).then(() => {
+//         if(user) {
+//             console.log(1);
+//             done(null, user);
+//             console.log(2);
+//             res.render('profile', {
+//             });
+//         }
+//     }).catch(() => {
+//         console.log(1);
+//         done(null, false);
+//         console.log(2);
+//         res.render('login', {
+//             error: 'Invalid credentials.'
+//         });
+//     });
+// });
+
+//passport middleware
+passport.use('local-login', new LocalStrategy(
+    function(req, username, password, done) {
+        console.log(1);
+        User.findByCredentials(req.body.email, req.body.password).then(() => {
+                    if(user) {
+
+                        done(null, user);
+                        
+                    }
+                    }).catch(() => {
+
+                        done(null, false);
+
+                    
+                    });
+    }
+));
+
+//Login POST 
+
+app.post('/login/redirect',
+  passport.authenticate('local-login'),
+  function(req, res) {
+    res.redirect('/profile/' + req.user.username);
+  });
 
 
 app.listen(port, () => {

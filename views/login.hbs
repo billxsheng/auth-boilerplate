@@ -17,14 +17,15 @@
     <div class="main-home">
      <div class="home-main container">
         <img src="./media/billlogo3.png">
-        <form class="container login-form" method="POST" action="/auth/login">
+        <form class="container login-form" method="POST" action="/login/redirect">
             <h3>Log in to your account</h3>
-            <input class="el1" name="email" type="email" placeholder="Email" autocomplete="off" autofocus>
-            <input class="el1"  name="password" type="text" placeholder="Password" autocomplete="off">
+            <input class="el1" name="username" type="email" placeholder="Email" autocomplete="off" autofocus/>
+            <input class="el1"  name="password" type="text" placeholder="Password" autocomplete="off"/>
             <br>
             <input value="Sign In" class="btn btn-login btn-main" type="submit">
              <input value="Sign In with Google" class="btn btn-google-login btn-login btn-main2 disabled" type="submit">
         </form>
+         <div class="error-login">{{error}}</div>
         
     </div>
         <div class="panel-footer-home container">
