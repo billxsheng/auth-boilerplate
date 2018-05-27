@@ -11,7 +11,7 @@ const url = require('url');
 //     }
 // };
 
-router.get('/', (req, res) => {
+router.get('/', ensureAuthenticated, (req, res) => {
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
     console.log(query);
@@ -26,7 +26,9 @@ function ensureAuthenticated(req, res, next){
     if(req.isAuthenticated()) {
         return next();
     } else {
-        res.send('You are not logged in.')
+        res.render('login', {
+            error:"You are not logged in."
+        })
     }
 }
 
