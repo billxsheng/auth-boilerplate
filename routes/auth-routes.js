@@ -27,26 +27,27 @@ router.get('/logout', (req, res) => {
 
 router.post('/signup/local', urlencodedParser, (req, res) => {
     if(req.body.firstName === "" || req.body.lastName === "") {
-        res.render('signup', {
+        return res.render('signup', {
             error: "Please enter a valid name."
         });
     } else if (req.body.email === "") {
-        res.render('signup', {
+        return res.render('signup', {
             error: "Please enter a valid email."
         });
     } else if (req.body.password === "") {
-        res.render('signup', {
+        return res.render('signup', {
             error: "Please enter a valid password."
         });
     } else if(req.body.passwordConf === "") {
-        res.render('signup', {
+        return res.render('signup', {
             error: "Please confirm your password."
         });
     } else if(req.body.password != req.body.passwordConf) {
-        res.render('signup', {
+        return res.render('signup', {
             error: "Passwords do not match."
         });
     };
+    console.log('after validation');
     var user = new User();
     user.firstName = req.body.firstName;
     user.lastName =req.body.lastName;

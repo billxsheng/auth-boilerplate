@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, '/views')));
 //cookie session
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
-    keys:[keys.cookie.session]
+    keys: [keys.cookie.session]
 }));
 
 //initialize passport
@@ -50,7 +50,7 @@ app.get('/', (req, res) => {
 
 //login page route
 app.get('/login', (req, res) => {
-    res.render('login'); 
+    res.render('login');
 });
 
 // app.get('/profile', (req, res) => {
@@ -62,46 +62,76 @@ app.get('/login', (req, res) => {
 // });
 
 //serialize
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     done(null, user.id);
-  });
-  
+});
+
 
 //deserialize 
-  passport.deserializeUser(function(id, done) {
-    User.getUserById(id, function(err, user) {
-      done(err, user);
+passport.deserializeUser(function (id, done) {
+    User.getUserById(id, function (err, user) {
+        done(err, user);
     });
-  });
+});
 
+
+var inputCheck = function(req, res, next) {
+    if(req.body.email === "") {
+        return res.render('login', {
+            error: "Please enter a valid email."
+        })
+    } else if (req.body.password === "") {
+        return res.render('login', {
+            error: "Please enter a valid password."
+        })
+    }
+    next();
+};
+
+var accountCheck = function(req, res, next) {
+    User.findByCredentials(req.body.email, req.body.password).then((user) => {
+        if (user) {
+           next();
+        }
+    }).catch(() => {
+        return res.render('login', {
+            error: "Account not found."
+        })
+    });
+}
 
 
 //passport middleware
 passport.use('local-login', new LocalStrategy({
     usernameField: "email", passwordField: "password", passReqToCallback: true
 },
-    function(req, username, password, done) {
+    function (req, username, password, done) {
         User.findByCredentials(req.body.email, req.body.password).then((user) => {
-                    if(user) {
-                        done(null, user);
-                    }
-                    }).catch(() => {
-                        done(null, false);
-                    });
+            if (user) {
+                done(null, user);
+            }
+        }).catch(() => {
+            done(null, false);
+        });
     }
 ));
 
 //Login POST 
-
-app.post('/profile', [urlencodedParser,
-  passport.authenticate('local-login')],
-  function(req, res) {
-    res.render('profile', {
-        email: req.body.email,
-        firstName: req.user.firstName,
-        lastName: req.user.lastName
+app.post('/profile', [urlencodedParser, inputCheck, accountCheck,
+    passport.authenticate('local-login')],
+    function (req, res) {
+        res.render('profile', {
+            email: req.body.email,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName
+        });
     });
-  });
+
+
+app.get('/logout', (req, res) => {
+    req.logout();
+    res.render('login');
+});
 
 
 app.listen(port, () => {
