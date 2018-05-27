@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt-nodejs');
+//const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
+
 
 
 var userSchema = mongoose.Schema({
@@ -27,35 +29,35 @@ module.statics.emailVeri = function(email) {
     })
 };
 
-module.exports.createUser = (user, callback) => {
-    bcrypt.genSalt(10, (err, salt) => {
-        console.log(salt);
-        bcrypt.hash(user.password, salt, null, (err, hash) => {
-            user.password = hash;
-        });
+
+module.statics.findByCredentials = function(email, password) {
+    console.log(1);
+    var User = this;
+    return User.findOne({email: email}).then((user) => {
+        console.log(user);
+        if(!user) {
+            console.log(2);
+            return Promise.reject();
+        }
+        return new Promise((resolve, reject) => {
+            console.log(3);
+            bcrypt.compare(password, user.password, (err, res) => {
+                console.log(res);
+                if(res) {
+                    console.log(4);
+                    resolve(user);
+                } else {
+                    console.log(5);
+                    reject();
+                }
+            });
+        })
     });
-};
 
-// module.statics.findByCredentials = (email, password) => {
-//     return User.findOne({email}).then((user) => {
-//         if(!user) {
-//             return Promise.reject();
-//         }
-//         return new Promise((resolve, reject) => {
-//             bcrypt.compare(email, hash, (err, res) => {
-//                 if(res) {
-//                     resolve(user);
-//                 } else {
-//                     reject();
-//                 }
-//             });
-//         })
-//     });
+}
 
-// }
-
-module.exports.getByCredentials = function(username, callback) {
-var query = {username: username};
-User.findOne(query, callback);
-};
+// module.exports.getByCredentials = function(username, callback) {
+// var query = {username: username};
+// User.findOne(query, callback);
+// };
 

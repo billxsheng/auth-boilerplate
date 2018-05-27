@@ -97,10 +97,11 @@ app.get('/login', (req, res) => {
 // });
 
 //passport middleware
-passport.use('local-login', new LocalStrategy(
+passport.use('local-login', new LocalStrategy({
+    usernameField: "email", passwordField: "password", passReqToCallback: true
+},
     function(req, username, password, done) {
-        console.log(1);
-        User.findByCredentials(req.body.email, req.body.password).then(() => {
+        User.findByCredentials(req.body.email, req.body.password).then((user) => {
                     if(user) {
 
                         done(null, user);
@@ -117,10 +118,10 @@ passport.use('local-login', new LocalStrategy(
 
 //Login POST 
 
-app.post('/login/redirect',
-  passport.authenticate('local-login'),
+app.post('/login/redirect', [urlencodedParser,
+  passport.authenticate('local-login')],
   function(req, res) {
-    res.redirect('/profile/' + req.user.username);
+    res.redirect('/profile');
   });
 
 

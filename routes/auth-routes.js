@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const User = require('../model/user-model');
 var localStrategy = require('passport-local').Strategy;
 var mongoose1 = require('../db/mongoose');
+const bcrypt = require('bcrypt');
 
 //body-parser stuff
 router.use(bodyParser.json());
@@ -60,15 +61,14 @@ router.post('/signup/local', urlencodedParser, (req, res) => {
         })
     });
 
-   
-    User.createUser(user, (err, user) => {
-        if(err) {
-            throw err;
-        }
-        console.log(user);
-    });
-    user.save().then(() => {
-        res.render('login');
+    console.log('before', user);
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(user.password, salt, (err, hash) => {
+            user.password = hash;
+            user.save().then(() => {
+                res.render('login');
+            });
+        });
     });
 }); 
 
