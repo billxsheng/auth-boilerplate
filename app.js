@@ -53,48 +53,28 @@ app.get('/login', (req, res) => {
     res.render('login'); 
 });
 
+// app.get('/profile', (req, res) => {
+//     res.render('profile', {
+//         email: req.body.email,
+//         firstName: req.user.firstName,
+//         lastName: req.user.lastName
+//     }); 
+// });
+
 //serialize
-// passport.serializeUser(function(user, done) {
-//     done(null, user.id);
-//   });
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
   
 
-  //deserialize 
-//   passport.deserializeUser(function(id, done) {
-//     User.getUserById(id, function(err, user) {
-//       done(err, user);
-//     });
-//   });
+//deserialize 
+  passport.deserializeUser(function(id, done) {
+    User.getUserById(id, function(err, user) {
+      done(err, user);
+    });
+  });
 
 
-// app.post('/login/redirect', urlencodedParser, (req, res) => {
-//     console.log(req.body);
-//     if(req.body.email === "") {
-//         res.render('login', {
-//             error: "Please enter a valid email."
-//         });
-//     } else if (req.body.password === "") {
-//         res.render('login', {
-//             error: "Please enter a valid password."
-//         });
-//     };
-//     User.findByCredentials(req.body.email, req.body.password).then(() => {
-//         if(user) {
-//             console.log(1);
-//             done(null, user);
-//             console.log(2);
-//             res.render('profile', {
-//             });
-//         }
-//     }).catch(() => {
-//         console.log(1);
-//         done(null, false);
-//         console.log(2);
-//         res.render('login', {
-//             error: 'Invalid credentials.'
-//         });
-//     });
-// });
 
 //passport middleware
 passport.use('local-login', new LocalStrategy({
@@ -103,25 +83,24 @@ passport.use('local-login', new LocalStrategy({
     function(req, username, password, done) {
         User.findByCredentials(req.body.email, req.body.password).then((user) => {
                     if(user) {
-
                         done(null, user);
-                        
                     }
                     }).catch(() => {
-
                         done(null, false);
-
-                    
                     });
     }
 ));
 
 //Login POST 
 
-app.post('/login/redirect', [urlencodedParser,
+app.post('/profile', [urlencodedParser,
   passport.authenticate('local-login')],
   function(req, res) {
-    res.redirect('/profile');
+    res.render('profile', {
+        email: req.body.email,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName
+    });
   });
 
 
