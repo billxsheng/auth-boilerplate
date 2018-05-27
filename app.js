@@ -12,6 +12,8 @@ const User = require('./model/user-model');
 const bodyParser = require('body-parser');
 var LocalStrategy = require('passport-local').Strategy;
 var mongodb = require('mongodb');
+const querystring = require('querystring');    
+const url = require('url');    
 
 //express app
 const app = express();
@@ -120,11 +122,14 @@ passport.use('local-login', new LocalStrategy({
 app.post('/profile', [urlencodedParser, inputCheck, accountCheck,
     passport.authenticate('local-login')],
     function (req, res) {
-        res.render('profile', {
-            email: req.body.email,
-            firstName: req.user.firstName,
-            lastName: req.user.lastName
-        });
+        res.redirect(url.format({
+            pathname:"/profile/",
+            query: {
+                "fn": req.user.firstName,
+                "ln": req.user.lastName,
+                "email": req.body.email
+            }
+        }));
     });
 
 
