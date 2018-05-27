@@ -6,6 +6,7 @@ const User = require('../model/user-model');
 var localStrategy = require('passport-local').Strategy;
 var mongoose1 = require('../db/mongoose');
 const bcrypt = require('bcrypt');
+var nodemailer = require('nodemailer');
 
 //body-parser stuff
 router.use(bodyParser.json());
@@ -69,6 +70,19 @@ router.post('/signup/local', urlencodedParser, (req, res) => {
             user.save().then(() => {
                 res.render('login');
             });
+            // var transporter = nodemailer.createTransport({
+            //     service: 'gmail',
+            //     auth: {
+            //       user: 'billxsheng@gmail.com',
+            //       pass: ''
+            //     }
+            //   });
+            //   var mailOptions = {
+            //     from: 'youremail@gmail.com',
+            //     to: user.email,
+            //     subject: 'Sending Email using Node.js',
+            //     text: 'ezpz'
+            //   };
         });
     });
 }); 
