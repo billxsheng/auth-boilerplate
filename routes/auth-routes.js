@@ -65,8 +65,10 @@ router.post('/signup/local', urlencodedParser, (req, res) => {
 
     console.log('before', user);
     bcrypt.genSalt(10, (err, salt) => {
+        console.log('gensalt', salt);
         bcrypt.hash(user.password, salt, (err, hash) => {
             user.password = hash;
+            console.log('after', user);
             user.save().then(() => {
                 res.render('login');
             });
