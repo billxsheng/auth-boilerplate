@@ -39,6 +39,10 @@ router.post('/signup/local', urlencodedParser, (req, res) => {
         return res.render('signup', {
             error: "Please enter a valid password."
         });
+    } else if(req.body.password.length < 6) {
+        return res.render('signup', {
+            error: "Password must be a minimum of 6 characters."
+        });
     } else if(req.body.passwordConf === "") {
         return res.render('signup', {
             error: "Please confirm your password."
