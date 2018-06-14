@@ -1,7 +1,6 @@
 {
   "name": "oauthbp",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -24,5 +23,14 @@
     "passport-local": "^1.0.0",
     "querystring": "^0.2.0",
     "url": "^0.11.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/billxsheng/JS-OAuthBP.git"
+  },
+  "bugs": {
+    "url": "https://github.com/billxsheng/JS-OAuthBP/issues"
+  },
+  "homepage": "https://github.com/billxsheng/JS-OAuthBP#readme",
+  "description": ""
 }
