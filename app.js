@@ -66,9 +66,9 @@ passport.serializeUser(function (user, done) {
 
 //deserialize 
 passport.deserializeUser(function (id, done) {
-    User.getUserById(id, function (err, user) {
+    User.findById(id, (err, user) => {
         done(err, user);
-    });
+    })
 });
 
 

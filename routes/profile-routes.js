@@ -2,7 +2,7 @@ const router = require('express').Router();
 const url = require('url');    
 
 
-router.get('/', ensureAuthenticated, (req, res) => {
+router.get('/', ensureAuthenticated,  (req, res) => {
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
     console.log(query);
