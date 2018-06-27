@@ -1,15 +1,6 @@
 const router = require('express').Router();
-const hbs = require('hbs');
-const querystring = require('querystring');
 const url = require('url');    
 
-// const authCheck = (req, res, next) => {
-//     if(!req.user) {
-//         res.redirect('/auth/login');
-//     } else {
-//         next();
-//     }
-// };
 
 router.get('/', ensureAuthenticated, (req, res) => {
     var url_parts = url.parse(req.url, true);

@@ -1,18 +1,13 @@
 const express = require('express');
 const profileRoutes = require('./routes/profile-routes');
 const authRoutes = require('./routes/auth-routes');
-const passportSetup = require('./config/passport-setup');
-const mongoose = require('mongoose');
 const keys = require('./db/keys');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
-const hbs = require('hbs');
 const path = require('path');
 const User = require('./model/user-model');
 const bodyParser = require('body-parser');
 var LocalStrategy = require('passport-local').Strategy;
-var mongodb = require('mongodb');
-const querystring = require('querystring');    
 const url = require('url');    
 
 //express app
