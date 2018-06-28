@@ -3,13 +3,10 @@ const url = require('url');
 
 
 router.get('/', ensureAuthenticated,  (req, res) => {
-    var url_parts = url.parse(req.url, true);
-    var query = url_parts.query;
-    console.log(query);
     res.render('profile', {
-        firstName: query.fn,
-        lastName: query.ln,
-        email: query.email
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        email: req.user.email
     });
 });
 
