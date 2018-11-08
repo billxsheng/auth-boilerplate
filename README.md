@@ -1,3 +1,8 @@
 # JS-AuthBP
-Complete user authentication boilerplate system. Written in Node.js &amp; Express.js with MongoDB. 🔑 
-https://billshengauth.herokuapp.com/
+<b>Technologies used:</b>
+<br>
+HTML/CSS
+<br>
+Node.js
+<br>
+Express.js
