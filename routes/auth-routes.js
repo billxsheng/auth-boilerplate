@@ -13,17 +13,8 @@ router.use(bodyParser.json());
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 //auth login
-router.get('/signupredirect', (req, res) => {
-    res.render('signupredirect');
-});
-
 router.get('/signup', (req, res) => {
     res.render('signup');
-});
-
-router.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/');
 });
 
 router.post('/signup/local', urlencodedParser, (req, res) => {
@@ -54,9 +45,9 @@ router.post('/signup/local', urlencodedParser, (req, res) => {
     };
     console.log('after validation');
     var user = new User();
-    user.firstName = req.body.firstName;
-    user.lastName =req.body.lastName;
-    user.email = req.body.email;
+    user.firstName = capitalizeName(req.body.firstName);
+    user.lastName =capitalizeName(req.body.lastName);
+    user.email = lcEmail(req.body.email);
     //username
     user.password = req.body.password;
     User.emailVeri(req.body.email).then(() => {
@@ -76,35 +67,20 @@ router.post('/signup/local', urlencodedParser, (req, res) => {
             user.save().then(() => {
                 res.render('login');
             });
-            // var transporter = nodemailer.createTransport({
-            //     service: 'gmail',
-            //     auth: {
-            //       user: 'billxsheng@gmail.com',
-            //       pass: ''
-            //     }
-            //   });
-            //   var mailOptions = {
-            //     from: 'youremail@gmail.com',
-            //     to: user.email,
-            //     subject: 'Sending Email using Node.js',
-            //     text: 'ezpz'
-            //   };
         });
     });
 }); 
 
-//google callback route
-router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
-    res.redirect('/profile');
-});
+function capitalizeName(name) {
+    var firstLetter = name.substr(0,1).toUpperCase();
+    var remaining = name.substr(1).toLowerCase();
+    var newString = firstLetter + remaining
+    return newString
+}
 
-//auth with google
-router.get('/google', passport.authenticate("google", {
-    scope: ['profile']
-}), (req, res) => {
-    //handle with passport
-    res.send('logging in with google');
-});
-
+function lcEmail(email) {
+    var newEmail = email.toLowerCase();
+    return newEmail;
+}
 
 module.exports = router;

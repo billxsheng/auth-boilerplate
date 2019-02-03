@@ -50,19 +50,10 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 
-// app.get('/profile', (req, res) => {
-//     res.render('profile', {
-//         email: req.body.email,
-//         firstName: req.user.firstName,
-//         lastName: req.user.lastName
-//     }); 
-// });
-
 //serialize
 passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
-
 
 //deserialize 
 passport.deserializeUser(function (id, done) {
@@ -70,7 +61,6 @@ passport.deserializeUser(function (id, done) {
         done(err, user);
     })
 });
-
 
 var inputCheck = function(req, res, next) {
     if(req.body.email === "") {
@@ -117,22 +107,14 @@ passport.use('local-login', new LocalStrategy({
 app.post('/profile', [urlencodedParser, inputCheck, accountCheck,
     passport.authenticate('local-login')],
     function (req, res) {
-        res.redirect(url.format({
-            pathname:"/profile/",
-            query: {
-                "fn": req.user.firstName,
-                "ln": req.user.lastName,
-                "email": req.body.email
-            }
-        }));
+        res.redirect('/profile')
     });
 
 
 app.get('/logout', (req, res) => {
     req.logout();
-    res.render('login');
+    res.redirect('/login');
 });
-
 
 app.listen(port, () => {
     console.log(`app now up on port ${port}`);

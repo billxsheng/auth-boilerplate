@@ -10,12 +10,7 @@ var userSchema = mongoose.Schema({
         email: String,
         password: {
             type: String
-    }
-    
-    //username: String,
-   // googleId: String,
-    
-
+    }  
 });
 
 var User = module.statics = module.exports = mongoose.model('User', userSchema);
