@@ -7,7 +7,7 @@ const passport = require('passport');
 const path = require('path');
 const User = require('./model/user-model');
 const bodyParser = require('body-parser');
-var LocalStrategy = require('passport-local').Strategy;
+let LocalStrategy = require('passport-local').Strategy;
 const url = require('url');    
 
 //express app
@@ -15,7 +15,7 @@ const app = express();
 
 //body-parser stuff
 app.use(bodyParser.json());
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 //deploy 
 const port = process.env.PORT || 3000
@@ -62,7 +62,7 @@ passport.deserializeUser(function (id, done) {
     })
 });
 
-var inputCheck = function(req, res, next) {
+let inputCheck = function(req, res, next) {
     if(req.body.email === "") {
         return res.render('login', {
             error: "Please enter a valid email."
@@ -75,7 +75,7 @@ var inputCheck = function(req, res, next) {
     next();
 };
 
-var accountCheck = function(req, res, next) {
+let accountCheck = function(req, res, next) {
     User.findByCredentials(req.body.email, req.body.password).then((user) => {
         if (user) {
            next();

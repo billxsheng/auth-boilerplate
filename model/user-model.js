@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 
 
-var userSchema = mongoose.Schema({
+let userSchema = mongoose.Schema({
         firstName:  String,
         lastName: String,
         email: String,
@@ -13,10 +13,10 @@ var userSchema = mongoose.Schema({
     }  
 });
 
-var User = module.statics = module.exports = mongoose.model('User', userSchema);
+let User = module.statics = module.exports = mongoose.model('User', userSchema);
 
 module.statics.emailVeri = function(email) {
-    var User = this;
+    let User = this;
     return User.findOne({email}).then((user) => {
         if(user) {
             return Promise.reject();
@@ -26,7 +26,7 @@ module.statics.emailVeri = function(email) {
 
 
 module.statics.findByCredentials = function(email, password) {
-    var User = this;
+    let User = this;
     return User.findOne({email: email}).then((user) => {
         console.log(user);
         if(!user) {
@@ -47,7 +47,7 @@ module.statics.findByCredentials = function(email, password) {
 }
 
 module.exports.getUserById = function(username, callback) {
-var query = {username: username};
+    let query = {username: username};
 User.findOne(query, callback);
 };
 
