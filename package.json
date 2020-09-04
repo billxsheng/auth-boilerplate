@@ -15,7 +15,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "hbs": "^4.0.1",
-    "mongodb": "^3.1.0-beta4",
+    "mongodb": "^3.1.13",
     "mongoose": "^5.4.10",
     "nodemailer": "^4.6.5",
     "passport": "^0.4.0",
